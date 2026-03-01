@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision & What We Do</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-peach: #FAD6C3;
+            --light-peach: #FFE5D9;
+            --white: #FFFFFF;
+            --dark-text: #333333;
+            --accent: #E29578;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--dark-text);
+            padding: 3rem 5%;
+            background-color: var(--white);
+            margin: 0;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--dark-text);
+        }
+
+        /* Vision Grid */
+        .vision-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .vision-card {
+            background-color: var(--soft-peach);
+            padding: 2.5rem 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .vision-card:hover {
+            transform: translateY(-8px);
+            background-color: var(--light-peach);
+        }
+
+        .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .vision-card h3 {
+            font-family: var(--font-heading);
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        /* What We Do - Counters & List */
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            background-color: var(--light-peach);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .stat-item h4 {
+            font-size: 3rem;
+            font-family: var(--font-heading);
+            color: var(--accent);
+            margin: 0;
+        }
+
+        .stat-item p {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #555;
+            margin-top: 0.5rem;
+        }
+
+        .activities-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .activity-pill {
+            background-color: var(--white);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .activity-pill:hover {
+            background-color: var(--accent);
+            color: var(--white);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(226, 149, 120, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body { padding: 2rem 1rem; }
+            .section-title { font-size: 2rem; margin-bottom: 1.5rem; }
+            .vision-grid { grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+            .vision-card { padding: 2rem 1.5rem; }
+            .stats-container { flex-direction: column; gap: 2rem; padding: 2rem 1.5rem; }
+            .stat-item h4 { font-size: 2.5rem; }
+            .activities-list { gap: 1rem; }
+            .activity-pill { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+        }
+
+        /* MIDNIGHT READING MODE */
+        body.dark-mode {
+            --white: #121212;         
+            --light-peach: #1E1E1E;   
+            --soft-peach: #2A2A2A;    
+            --dark-text: #EAEAEA;     
+            --accent: #E29578;        
+        }
+
+        body.dark-mode .vision-card { background-color: var(--soft-peach); box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        body.dark-mode .vision-card:hover { background-color: #333; }
+        body.dark-mode .stats-container { background-color: var(--light-peach); }
+        body.dark-mode .activity-pill { background-color: transparent; }
+        body.dark-mode .activity-pill:hover { background-color: var(--accent); color: #121212; }
+    </style>
+</head>
+<body>
+
+    <h2 class="section-title">Our Vision</h2>
+    <div class="vision-grid">
+        <div class="vision-card">
+            <div class="icon">🎨</div>
+            <h3>Promote Creativity</h3>
+            <p>Nurturing original ideas through writing and storytelling.</p>
+        </div>
+        <div class="vision-card">
+            <div class="icon">🎙️</div>
+            <h3>Encourage Public Speaking</h3>
+            <p>Providing platforms for voices to be heard without hesitation.</p>
+        </div>
+        <div class="vision-card">
+            <div class="icon">🤝</div>
+            <h3>Build Communicators</h3>
+            <p>Developing confident individuals ready to engage the world.</p>
+        </div>
+        <div class="vision-card">
+            <div class="icon">🎭</div>
+            <h3>Foster Artistic Expression</h3>
+            <p>Embracing all forms of literary art, from poetry to plays.</p>
+        </div>
+    </div>
+
+    <h2 class="section-title">What We Do</h2>
+    
+    <div class="stats-container">
+        <div class="stat-item">
+            <h4 class="counter" data-target="25">0</h4>
+            <p>Events Hosted</p>
+        </div>
+        <div class="stat-item">
+            <h4 class="counter" data-target="150">0</h4>
+            <p>Active Members</p>
+        </div>
+        <div class="stat-item">
+            <h4 class="counter" data-target="10">0</h4>
+            <p>Guest Workshops</p>
+        </div>
+    </div>
+
+    <div class="activities-list">
+        <div class="activity-pill">Host Competitions</div>
+        <div class="activity-pill">Anchoring</div>
+        <div class="activity-pill">Open Mic Sessions</div>
+        <div class="activity-pill">Literary Festivals</div>
+        <div class="activity-pill">Collaboration Events</div>
+    </div>
+
+    <script>
+        const counters = document.querySelectorAll('.counter');
+        const speed = 50; 
+
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const inc = target / speed;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(updateCount, 40);
+                } else {
+                    counter.innerText = target + "+";
+                }
+            };
+            
+            updateCount();
+        });
+    </script>
+
+</body>
+</html>

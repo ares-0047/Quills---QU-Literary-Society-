@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quills Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-peach: #FAD6C3;
+            --light-peach: #FFE5D9;
+            --white: #FFFFFF;
+            --dark-text: #333333;
+            --accent: #E29578;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--dark-text);
+            background-color: var(--light-peach);
+            margin: 0;
+            padding: 2rem;
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-heading); color: var(--accent); margin-top:0;}
+
+        #login-screen {
+            max-width: 400px;
+            margin: 100px auto;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: var(--font-body);
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        button:hover { background-color: #d17b5c; }
+
+        #dashboard-screen { display: none; }
+        
+        .dashboard-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--white); padding: 1.5rem 2rem; border-radius: 12px;
+            margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .admin-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;
+        }
+
+        .admin-card {
+            background: var(--white); padding: 2rem; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .full-width-card {
+            grid-column: 1 / -1;
+        }
+
+        .data-item {
+            background: #f9f9f9; padding: 15px; margin-bottom: 10px;
+            border-left: 4px solid var(--accent); border-radius: 6px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .delete-btn { background-color: #ef4444; padding: 6px 12px; font-size: 0.8rem; }
+        .delete-btn:hover { background-color: #dc2626; }
+        
+        .approve-btn { background-color: #10b981; padding: 6px 12px; font-size: 0.8rem; margin-right: 5px;}
+        .approve-btn:hover { background-color: #059669; }
+
+        .attendance-controls { display: flex; gap: 10px; margin-bottom: 15px; }
+        .date-picker-wrapper { background: var(--soft-peach); padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .date-picker-wrapper label { font-weight: 600; display: block; margin-bottom: 5px; }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            #login-screen { margin: 50px auto; padding: 2rem 1.5rem; }
+            .admin-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .full-width-card { grid-column: auto; }
+            .dashboard-header { flex-direction: column; gap: 1rem; text-align: center; }
+            .attendance-controls { flex-direction: column; align-items: stretch; }
+            .attendance-controls button { width: 100%; }
+            .data-item { flex-direction: column; gap: 10px; text-align: left; align-items: stretch !important;}
+            .data-item div { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <h2>Admin Login</h2>
+        <p>Restricted Access</p>
+        <input type="text" id="admin-id" placeholder="Admin ID">
+        <input type="password" id="admin-pass" placeholder="Password">
+        <button onclick="window.checkLogin()">Login</button>
+        <p id="login-error" style="color: red; display: none; margin-top: 10px;">Invalid Credentials</p>
+    </div>
+
+    <div id="dashboard-screen">
+        <div class="dashboard-header">
+            <h2>Quills Control Panel</h2>
+            <button onclick="window.logout()">Logout</button>
+        </div>
+
+        <div class="admin-grid">
+            
+            <div class="admin-card full-width-card">
+                <h3>Pending Submissions <span id="pending-count" style="background:var(--accent); color:white; padding: 2px 10px; border-radius:15px; font-size:1rem; margin-left:10px;">0</span></h3>
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Review works submitted by members before publishing them to the live journal.</p>
+                <div id="pending-list"></div>
+            </div>
+            
+            <div class="admin-card">
+                <h3>Manage Events</h3>
+                <div id="events-list"></div>
+                
+                <h4 style="margin-top: 2rem;">Add New Event</h4>
+                <input type="text" id="ev-date" placeholder="Date & Time (e.g. Oct 15 | 10:00 AM)">
+                <input type="text" id="ev-title" placeholder="Event Title">
+                <textarea id="ev-desc" rows="3" placeholder="Description"></textarea>
+                <input type="text" id="ev-btn" placeholder="Button Text (e.g. Register Now)">
+                <input type="text" id="ev-link" placeholder="Link (e.g. comingsoon.html)">
+                <button onclick="window.addEvent()">Save Event</button>
+            </div>
+
+            <div class="admin-card">
+                <h3>Manage Live Journal</h3>
+                <div id="journal-list"></div>
+
+                <h4 style="margin-top: 2rem;">Add Journal Entry Manually</h4>
+                <select id="j-tag">
+                    <option value="Poetry">Poetry</option>
+                    <option value="Short Story">Short Story</option>
+                    <option value="Essay">Essay</option>
+                </select>
+                <input type="text" id="j-title" placeholder="Piece Title">
+                <input type="text" id="j-author" placeholder="Author Name">
+                <textarea id="j-excerpt" rows="2" placeholder="Short Excerpt for Card"></textarea>
+                <textarea id="j-full" rows="4" placeholder="Full Text (Use <p> and <br> for formatting)"></textarea>
+                <button onclick="window.addJournal()">Save Journal Entry</button>
+            </div>
+
+            <div class="admin-card full-width-card">
+                <h3>Society Members & Attendance</h3>
+                <div class="attendance-controls">
+                    <input type="text" id="m-name" placeholder="New Member Name" style="margin-bottom: 0;">
+                    <button onclick="window.addMember()" style="white-space: nowrap;">+ Add Member</button>
+                </div>
+                <div class="date-picker-wrapper">
+                    <label>Select Session Date to Mark Attendance:</label>
+                    <input type="date" id="attendance-date" style="margin-bottom: 0;" onchange="window.renderMembers()">
+                </div>
+                <div id="members-list"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // !!! PASTE YOUR FIREBASE CONFIG HERE !!!
+        const firebaseConfig = {
+            apiKey: "AIzaSyAyYluyf-EKlKDbeKh1-GXyGZSy6P7vrz8",
+            authDomain: "quills-society.firebaseapp.com",
+            projectId:  "quills-society",
+            storageBucket: "quills-society.firebasestorage.app",
+            messagingSenderId:  "905436200704",
+            appId: "1:905436200704:web:b28a774331113acb783de5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const docRef = doc(db, "website", "content");
+
+        const VALID_ID = "admin";
+        const VALID_PASS = "quills&society2026";
+        let siteData = { events: [], journal: [], members: [], pendingJournal: [] };
+
+        window.onload = () => {
+            document.getElementById('attendance-date').valueAsDate = new Date();
+            if (sessionStorage.getItem('quillsAdmin') === 'true') showDashboard();
+        };
+
+        window.checkLogin = function() {
+            const id = document.getElementById('admin-id').value;
+            const pass = document.getElementById('admin-pass').value;
+            if (id === VALID_ID && pass === VALID_PASS) {
+                sessionStorage.setItem('quillsAdmin', 'true');
+                showDashboard();
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        };
+
+        window.logout = function() {
+            sessionStorage.removeItem('quillsAdmin');
+            document.getElementById('dashboard-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'block';
+        };
+
+        function showDashboard() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard-screen').style.display = 'block';
+            loadDataFromCloud();
+        }
+
+        async function loadDataFromCloud() {
+            try {
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    siteData = docSnap.data();
+                    if (!siteData.members) siteData.members = [];
+                    if (!siteData.pendingJournal) siteData.pendingJournal = [];
+                }
+                renderLists();
+                window.renderMembers();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                alert("Failed to connect to database.");
+            }
+        }
+
+        async function saveDataToCloud(silent = false) {
+            try {
+                await setDoc(docRef, siteData);
+                if (!silent) alert("Changes Saved Globally!");
+            } catch (error) {
+                console.error("Error saving data:", error);
+                alert("Failed to save changes.");
+            }
+        }
+
+        function renderLists() {
+            const pList = document.getElementById('pending-list');
+            pList.innerHTML = '';
+            document.getElementById('pending-count').innerText = siteData.pendingJournal ? siteData.pendingJournal.length : 0;
+            
+            if(siteData.pendingJournal && siteData.pendingJournal.length > 0) {
+                siteData.pendingJournal.forEach((p, i) => {
+                    pList.innerHTML += `
+                        <div class="data-item" style="flex-direction: column; align-items: flex-start;">
+                            <div style="width:100%; display:flex; justify-content:space-between; margin-bottom: 8px;">
+                                <div><span style="background:var(--light-peach); padding:2px 8px; border-radius:10px; font-size:0.75rem; color:var(--accent); text-transform:uppercase; font-weight:bold;">${p.tag}</span> <strong>${p.title}</strong> by ${p.author}</div>
+                                <span style="font-size:0.8rem; color:#888;">${p.submittedAt || ''}</span>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #555; font-style: italic; margin-bottom: 12px; padding: 10px; background: white; border-radius: 6px; width: 100%; box-sizing:border-box;">"${p.excerpt}"</div>
+                            <div style="display: flex;">
+                                <button class="approve-btn" onclick="window.approveSubmission(${i})">✓ Approve & Publish</button>
+                                <button class="delete-btn" onclick="window.rejectSubmission(${i})">✕ Reject</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                pList.innerHTML = "<p style='text-align:center; padding: 2rem; background: #f9f9f9; border-radius: 8px;'>No pending submissions right now.</p>";
+            }
+
+            const eList = document.getElementById('events-list');
+            eList.innerHTML = '';
+            if(siteData.events) {
+                siteData.events.forEach((ev, i) => {
+                    eList.innerHTML += `
+                        <div class="data-item">
+                            <span><strong>${ev.title}</strong> (${ev.date})</span>
+                            <button class="delete-btn" onclick="window.deleteEvent(${i})">Delete</button>
+                        </div>
+                    `;
+                });
+            }
+
+            const jList = document.getElementById('journal-list');
+            jList.innerHTML = '';
+            if(siteData.journal) {
+                siteData.journal.forEach((j, i) => {
+                    jList.innerHTML += `
+                        <div class="data-item">
+                            <span><strong>${j.title}</strong> by ${j.author}</span>
+                            <button class="delete-btn" onclick="window.deleteJournal(${i})">Delete</button>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        window.approveSubmission = function(index) {
+            if(confirm("Are you sure you want to publish this to the live Journal?")) {
+                if(!siteData.journal) siteData.journal = [];
+                const approvedPiece = siteData.pendingJournal.splice(index, 1)[0];
+                siteData.journal.push(approvedPiece);
+                renderLists();
+                saveDataToCloud();
+            }
+        };
+
+        window.rejectSubmission = function(index) {
+            if(confirm("Permanently delete this submission?")) {
+                siteData.pendingJournal.splice(index, 1);
+                renderLists();
+                saveDataToCloud();
+            }
+        };
+
+        window.renderMembers = function() {
+            const mList = document.getElementById('members-list');
+            mList.innerHTML = '';
+            const selectedDate = document.getElementById('attendance-date').value;
+
+            if(siteData.members && siteData.members.length > 0) {
+                siteData.members.forEach((m, i) => {
+                    const isPresent = m.attendance && m.attendance.includes(selectedDate);
+                    mList.innerHTML += `
+                        <div class="data-item" style="align-items: center;">
+                            <div>
+                                <strong>${m.name}</strong><br>
+                                <label style="font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 5px; margin-top: 5px;">
+                                    <input type="checkbox" ${isPresent ? 'checked' : ''} onchange="window.toggleAttendance(${i}, '${selectedDate}')"> 
+                                    Present on ${selectedDate}
+                                </label>
+                            </div>
+                            <button class="delete-btn" onclick="window.deleteMember(${i})">Remove</button>
+                        </div>
+                    `;
+                });
+            } else { mList.innerHTML = "<p>No members added yet.</p>"; }
+        }
+
+        window.addMember = function() {
+            if(!siteData.members) siteData.members = [];
+            const name = document.getElementById('m-name').value;
+            if(!name) return alert("Please enter a name.");
+            siteData.members.push({ name: name, attendance: [] });
+            document.getElementById('m-name').value = '';
+            window.renderMembers();
+            saveDataToCloud();
+        };
+
+        window.deleteMember = function(index) {
+            if(confirm("Permanently remove this member?")) {
+                siteData.members.splice(index, 1);
+                window.renderMembers();
+                saveDataToCloud();
+            }
+        };
+
+        window.toggleAttendance = function(memberIndex, date) {
+            const member = siteData.members[memberIndex];
+            if(!member.attendance) member.attendance = [];
+            const dateIndex = member.attendance.indexOf(date);
+            if(dateIndex > -1) member.attendance.splice(dateIndex, 1);
+            else member.attendance.push(date);
+            saveDataToCloud(true); 
+        };
+
+        window.addEvent = function() {
+            if(!siteData.events) siteData.events = [];
+            siteData.events.push({
+                date: document.getElementById('ev-date').value,
+                title: document.getElementById('ev-title').value,
+                description: document.getElementById('ev-desc').value,
+                btnText: document.getElementById('ev-btn').value || "Read More",
+                link: document.getElementById('ev-link').value || "comingsoon.html"
+            });
+            document.getElementById('ev-date').value = '';
+            document.getElementById('ev-title').value = '';
+            document.getElementById('ev-desc').value = '';
+            renderLists();
+            saveDataToCloud();
+        };
+
+        window.deleteEvent = function(index) {
+            if(confirm("Delete this event globally?")) {
+                siteData.events.splice(index, 1);
+                renderLists();
+                saveDataToCloud();
+            }
+        };
+
+        window.addJournal = function() {
+            if(!siteData.journal) siteData.journal = [];
+            siteData.journal.push({
+                tag: document.getElementById('j-tag').value,
+                title: document.getElementById('j-title').value,
+                author: document.getElementById('j-author').value,
+                excerpt: document.getElementById('j-excerpt').value,
+                fullText: document.getElementById('j-full').value,
+                link: "comingsoon.html"
+            });
+            document.getElementById('j-title').value = '';
+            document.getElementById('j-author').value = '';
+            document.getElementById('j-excerpt').value = '';
+            document.getElementById('j-full').value = '';
+            renderLists();
+            saveDataToCloud();
+        };
+
+        window.deleteJournal = function(index) {
+            if(confirm("Delete this entry globally?")) {
+                siteData.journal.splice(index, 1);
+                renderLists();
+                saveDataToCloud();
+            }
+        };
+    </script>
+</body>
+</html>

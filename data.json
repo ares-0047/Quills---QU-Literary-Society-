@@ -1,0 +1,55 @@
+{
+  "events": [
+    {
+      "date": "October 15, 2026 | 10:00 AM",
+      "title": "Abhivaykati",
+      "description": "Join us for an evening of spoken word. Bring your original pieces or just come to snap your fingers and support our university's poets.",
+      "btnText": "Reserve a Spot",
+      "link": "comingsoon.html"
+    },
+    {
+      "date": "November 2, 2026 | 4:00 PM",
+      "title": "Creative Writing Workshop",
+      "description": "Learn the art of world-building and character development from published author and guest speaker, Dr. Eleanor Vance.",
+      "btnText": "Register Now",
+      "link": "comingsoon.html"
+    },
+    {
+      "date": "March 26,27,28, 2026 | 5:30 PM",
+      "title": "Dharohar",
+      "description": "Watch our sharpest minds clash over classic literature vs. modern contemporary fiction. Audience votes for the winner!",
+      "btnText": "Attend Event",
+      "link": "comingsoon.html"
+    }
+  ],
+  "journal": [
+    {
+      "tag": "Poetry",
+      "title": "Echoes in the Library",
+      "author": "Sarah Jenkins",
+      "excerpt": "\"Dust settles on the spines of forgotten tales,<br>while my heart beats loudly in the quiet aisles...\"",
+      "fullText": "<p>Dust settles on the spines of forgotten tales,<br>while my heart beats loudly in the quiet aisles.</p><p>Shadows dance where the sunlight fails,<br>and whispers of the past begin their trials.</p><p>Every page a door, every word a key,<br>unlocking the universe, setting the mind free.</p>"
+    },
+    {
+      "tag": "Essay",
+      "title": "The Modern Protagonist",
+      "author": "David Chen",
+      "excerpt": "\"In a world increasingly driven by digital metrics, the protagonist of contemporary literature finds themselves navigating not dragons or empires...\"",
+      "fullText": "<p>In a world increasingly driven by digital metrics, the protagonist of contemporary literature finds themselves navigating not dragons or empires, but the labyrinth of their own isolated consciousness.</p><p>The hero's journey is no longer about conquering the external world, but rather finding a moment of authentic connection in a sea of superficial interactions. This shift in narrative reflects our own societal anxieties, mirroring the quiet desperation of a hyper-connected yet profoundly disconnected generation.</p>"
+    },
+    {
+      "tag": "Short Story",
+      "title": "Midnight Train to Nowhere",
+      "author": "Elena Rodriguez",
+      "excerpt": "\"The ticket was blank. No destination, no time. Just a solitary golden stamp that glimmered under the flickering station lights.\"",
+      "fullText": "<p>The ticket was blank. No destination, no time. Just a solitary golden stamp that glimmered under the flickering station lights.</p><p>Arthur gripped it tightly in his coat pocket. The platform was empty, save for the rhythmic dripping of rain from the awning. When the train finally arrived, it made no sound. Its doors slid open, revealing a carriage bathed in warm, amber light.</p><p>He stepped inside, and the doors hissed shut, leaving the world he knew behind. For the first time in years, he didn't care where he was going, only that he was finally moving.</p>"
+    },
+    {
+      "tag": "Poetry",
+      "title": "Autumn's Ink",
+      "author": "Marcus Cole",
+      "excerpt": "\"Leaves fall like crumpled drafts,<br>discarded by the wind's harsh pen.\"",
+      "fullText": "<p>Leaves fall like crumpled drafts,<br>discarded by the wind's harsh pen.</p><p>The sky bleeds a bruised plum,<br>as winter waits to speak again.</p><p>We trace the fading lines of summer,<br>knowing stories always have an end.</p>"
+    }
+  ]
+}

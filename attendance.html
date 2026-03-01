@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Attendance | Quills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-peach: #FAD6C3;
+            --light-peach: #FFE5D9;
+            --white: #FFFFFF;
+            --dark-text: #333333;
+            --accent: #E29578;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--dark-text);
+            background-color: var(--white);
+            margin: 0;
+            padding: 3rem 5%;
+            animation: fadeIn 0.8s ease-in-out;
+            min-height: 100vh;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+        }
+
+        .section-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .lookup-container {
+            max-width: 500px;
+            margin: 0 auto 3rem auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid var(--light-peach);
+            border-radius: 30px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .search-bar:focus {
+            border-color: var(--accent);
+        }
+
+        .check-btn {
+            background-color: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-body);
+        }
+
+        .check-btn:hover {
+            background-color: #d17b5c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(226, 149, 120, 0.4);
+        }
+
+        .attendance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        .member-card {
+            background: var(--white);
+            border: 1px solid var(--light-peach);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .member-name {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+            text-align: center;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 0.8rem;
+        }
+
+        .progress-bg {
+            width: 100%;
+            height: 12px;
+            background-color: var(--light-peach);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 6px;
+            transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .progress-fill.low { background-color: #ef4444; }
+        .progress-fill.perfect { background-color: #10b981; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 2rem 1rem; }
+            .section-title { font-size: 2rem; }
+            .lookup-container { flex-direction: column; }
+            .check-btn { width: 100%; }
+            .member-card { padding: 1.5rem; }
+        }
+
+        body.dark-mode {
+            --white: #121212;         
+            --light-peach: #1E1E1E;   
+            --soft-peach: #2A2A2A;    
+            --dark-text: #EAEAEA;     
+            --accent: #E29578;        
+        }
+
+        body.dark-mode .member-card {
+            background: var(--soft-peach);
+            border-color: #333;
+        }
+
+        body.dark-mode .search-bar {
+            background: var(--soft-peach);
+            color: var(--dark-text);
+            border-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <h2 class="section-title">Member Attendance</h2>
+        <p class="section-subtitle">Securely check your participation record.</p>
+    </div>
+
+    <div class="lookup-container">
+        <input type="text" id="search-input" class="search-bar" placeholder="Enter your full registered name..." onkeypress="handleEnter(event)">
+        <button onclick="window.checkMyAttendance()" class="check-btn">Check Record</button>
+    </div>
+
+    <div class="attendance-grid" id="attendance-container">
+        <p style="text-align:center; grid-column: 1 / -1; color: #888;">Enter your name above to view your attendance.</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // !!! PASTE YOUR FIREBASE CONFIG HERE !!!
+        const firebaseConfig = {
+            apiKey: "AIzaSyAyYluyf-EKlKDbeKh1-GXyGZSy6P7vrz8",
+            authDomain: "quills-society.firebaseapp.com",
+            projectId:  "quills-society",
+            storageBucket: "quills-society.firebasestorage.app",
+            messagingSenderId:  "905436200704",
+            appId: "1:905436200704:web:b28a774331113acb783de5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const docRef = doc(db, "website", "content");
+
+        window.allMembers = [];
+        window.totalSessionsHeld = 0;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists() && docSnap.data().members && docSnap.data().members.length > 0) {
+                    window.allMembers = docSnap.data().members;
+                    calculateTotalSessions();
+                } else {
+                    document.getElementById('attendance-container').innerHTML = "<p style='text-align:center; grid-column: 1 / -1;'>No attendance data available yet.</p>";
+                }
+            } catch (error) {
+                console.error("Error loading attendance:", error);
+                document.getElementById('attendance-container').innerHTML = "<p style='text-align:center; grid-column: 1 / -1; color: red;'>Failed to connect to database.</p>";
+            }
+        });
+
+        window.handleEnter = function(event) {
+            if (event.key === "Enter") {
+                window.checkMyAttendance();
+            }
+        };
+
+        function calculateTotalSessions() {
+            const uniqueDates = new Set();
+            window.allMembers.forEach(member => {
+                if (member.attendance) {
+                    member.attendance.forEach(date => uniqueDates.add(date));
+                }
+            });
+            window.totalSessionsHeld = uniqueDates.size;
+        }
+
+        window.checkMyAttendance = function() {
+            const searchInput = document.getElementById('search-input').value.trim().toLowerCase();
+            const container = document.getElementById('attendance-container');
+
+            if (searchInput.length < 2) {
+                container.innerHTML = "<p style='text-align:center; grid-column: 1 / -1; color: #ef4444;'>Please enter your full name.</p>";
+                return;
+            }
+
+            const foundMembers = window.allMembers.filter(member => 
+                member.name.toLowerCase() === searchInput
+            );
+
+            if (foundMembers.length === 0) {
+                container.innerHTML = "<p style='text-align:center; grid-column: 1 / -1;'>We couldn't find a member with that exact name. Please check your spelling or contact the admin.</p>";
+                return;
+            }
+
+            renderAttendance(foundMembers);
+        };
+
+        function renderAttendance(membersArray) {
+            const container = document.getElementById('attendance-container');
+            container.innerHTML = '';
+
+            membersArray.forEach(member => {
+                const attended = member.attendance ? member.attendance.length : 0;
+                let percentage = 0;
+                
+                if (window.totalSessionsHeld > 0) {
+                    percentage = Math.round((attended / window.totalSessionsHeld) * 100);
+                }
+
+                let colorClass = '';
+                if (percentage < 50 && window.totalSessionsHeld > 0) colorClass = 'low';
+                if (percentage === 100 && window.totalSessionsHeld > 0) colorClass = 'perfect';
+
+                const cardHTML = `
+                    <div class="member-card">
+                        <h3 class="member-name">${member.name}</h3>
+                        <div class="stats-row">
+                            <span>Sessions Attended: <strong>${attended}/${window.totalSessionsHeld}</strong></span>
+                            <span><strong>${percentage}%</strong></span>
+                        </div>
+                        <div class="progress-bg">
+                            <div class="progress-fill ${colorClass}" style="width: 0%;" data-target="${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+
+            setTimeout(() => {
+                const fills = document.querySelectorAll('.progress-fill');
+                fills.forEach(fill => {
+                    fill.style.width = fill.getAttribute('data-target');
+                });
+            }, 100);
+        }
+    </script>
+</body>
+</html>

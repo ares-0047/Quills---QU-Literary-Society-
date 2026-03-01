@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambient Reading Room | Quills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #E29578;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            color: #EAEAEA;
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #172554);
+            background-size: 400% 400%;
+            animation: ambientDrift 20s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 5%;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        @keyframes ambientDrift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .header h2 {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            margin: 0 0 0.5rem 0;
+            color: #FFFFFF;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            color: #A5B4FC;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .room-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1100px;
+            animation: slideUp 1s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timer-display {
+            font-family: var(--font-heading);
+            font-size: 5rem;
+            text-align: center;
+            margin: 1rem 0;
+            font-variant-numeric: tabular-nums;
+            color: #FFFFFF;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-family: var(--font-body);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .timer-modes {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+        }
+
+        .mode-btn {
+            background: none;
+            border: none;
+            color: #A5B4FC;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: color 0.3s ease;
+        }
+        
+        .mode-btn.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .scratchpad-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .scratchpad-header h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin: 0;
+            color: #FFFFFF;
+        }
+
+        .save-status {
+            font-size: 0.8rem;
+            color: #10B981;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        textarea {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            color: #EAEAEA;
+            font-family: var(--font-body);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            min-height: 300px;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .spotify-container {
+            margin-top: 2rem;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 900px) {
+            .room-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header h2 { font-size: 2.2rem; }
+            .timer-display { font-size: 3.5rem; margin: 0.5rem 0;}
+            .glass-panel { padding: 1.5rem; }
+            .timer-controls { flex-wrap: wrap; }
+            .timer-modes { flex-direction: column; align-items: center; gap: 0.8rem;}
+            textarea { min-height: 200px; padding: 1rem; }
+            .scratchpad-header { flex-direction: column; gap: 10px; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h2>The Lounge</h2>
+        <p>Your ambient space for deep focus, reading, and writing.</p>
+    </div>
+
+    <div class="room-grid">
+        <div class="left-col">
+            <div class="glass-panel">
+                <div class="timer-display" id="time-display">25:00</div>
+                
+                <div class="timer-controls">
+                    <button class="btn" id="start-btn" onclick="startTimer()">Start</button>
+                    <button class="btn" id="pause-btn" onclick="pauseTimer()">Pause</button>
+                    <button class="btn" onclick="resetTimer()">Reset</button>
+                </div>
+
+                <div class="timer-modes">
+                    <button class="mode-btn active" id="mode-focus" onclick="setMode('focus')">Focus (25m)</button>
+                    <button class="mode-btn" id="mode-break" onclick="setMode('break')">Short Break (5m)</button>
+                </div>
+            </div>
+
+            <div class="glass-panel spotify-container" style="padding: 0; background: transparent; border: none; box-shadow: none;">
+                <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/189Sow1xr7R94oSKs4kISc?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </div>
+
+        <div class="glass-panel">
+            <div class="scratchpad-header">
+                <h3>Writer's Scratchpad</h3>
+                <span class="save-status" id="save-status">Saved locally ✓</span>
+            </div>
+            <textarea id="scratchpad" placeholder="Type your brilliant ideas here... Don't worry, it auto-saves to your browser!"></textarea>
+        </div>
+    </div>
+
+    <script>
+        let timeLeft = 25 * 60; 
+        let timerId = null;
+        let isRunning = false;
+        let currentMode = 'focus';
+
+        const display = document.getElementById('time-display');
+        const startBtn = document.getElementById('start-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.title = `${display.textContent} | The Lounge`;
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            timerId = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerId);
+                    isRunning = false;
+                    alert(currentMode === 'focus' ? "Focus session complete! Take a break." : "Break is over! Time to write.");
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerId);
+            isRunning = false;
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeLeft = currentMode === 'focus' ? 25 * 60 : 5 * 60;
+            updateDisplay();
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('mode-focus').classList.remove('active');
+            document.getElementById('mode-break').classList.remove('active');
+            document.getElementById(`mode-${mode}`).classList.add('active');
+            resetTimer();
+        }
+
+        const scratchpad = document.getElementById('scratchpad');
+        const saveStatus = document.getElementById('save-status');
+        let typingTimer;
+
+        window.addEventListener('load', () => {
+            const savedText = localStorage.getItem('quills_scratchpad');
+            if (savedText) {
+                scratchpad.value = savedText;
+            }
+        });
+
+        scratchpad.addEventListener('input', () => {
+            saveStatus.style.opacity = '0';
+            clearTimeout(typingTimer);
+            
+            typingTimer = setTimeout(() => {
+                localStorage.setItem('quills_scratchpad', scratchpad.value);
+                saveStatus.style.opacity = '1'; 
+            }, 800); 
+        });
+
+        updateDisplay();
+    </script>
+</body>
+</html>

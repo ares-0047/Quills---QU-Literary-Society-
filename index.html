@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quills Literary Society | Quantum University</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-peach: #FAD6C3;
+            --light-peach: #FFE5D9;
+            --white: #FFFFFF;
+            --dark-text: #333333;
+            --accent: #E29578;
+            --nav-bg: #FFFFFF;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+            color: var(--dark-text);
+            background-color: var(--white);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            height: 100dvh; 
+            overflow: hidden;
+        }
+
+        /* --- SPLASH SCREEN ANIMATION --- */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .splash-logo {
+            font-family: var(--font-heading);
+            font-size: 4rem;
+            color: var(--accent);
+            letter-spacing: 6px;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUpSplash 0.8s ease forwards 0.2s;
+        }
+
+        .splash-sub {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            color: #777;
+            letter-spacing: 3px;
+            margin-top: 10px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUpSplash 0.8s ease forwards 0.5s;
+        }
+
+        @keyframes fadeUpSplash {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- NAVIGATION BAR --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: var(--nav-bg);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 3000; /* Higher than footer and links */
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.5rem;
+            margin-right: 20px;
+            user-select: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .theme-toggle:hover { transform: scale(1.1); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        .nav-btn {
+            background-color: var(--accent);
+            color: var(--white) !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #d17b5c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(226, 149, 120, 0.3);
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--dark-text);
+            user-select: none;
+            margin-left: 10px;
+        }
+
+        /* --- MOBILE MENU --- */
+        @media (max-width: 1100px) {
+            .hamburger { display: block; }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--nav-bg);
+                flex-direction: column;
+                align-items: center;
+                /* Increased bottom padding significantly for registration button visibility */
+                padding: 1.5rem 0 8rem 0; 
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                border-top: 1px solid var(--light-peach);
+                z-index: 2000;
+                
+                box-sizing: border-box; 
+                max-height: calc(100dvh - 70px);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-links.show { display: flex; }
+
+            .nav-links a {
+                margin: 12px 0;
+                font-size: 1.1rem;
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* --- IFRAME CONTAINER --- */
+        .content-container {
+            flex-grow: 1;
+            width: 100%;
+            border: none;
+            background-color: var(--white);
+            -webkit-overflow-scrolling: touch; 
+            overflow-y: auto; 
+            height: 10px; 
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* --- ANIMATED FOOTER --- */
+        .site-footer {
+            background-color: var(--nav-bg);
+            padding: 0.8rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.03);
+            font-size: 0.85rem;
+            z-index: 1000;
+            flex-shrink: 0; 
+            
+            opacity: 0;
+            transform: translateY(100%);
+            animation: slideUpFooter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.2s forwards; 
+        }
+
+        @keyframes slideUpFooter {
+            0% { opacity: 0; transform: translateY(100%); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer-left { color: #777; }
+
+        .footer-center {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-link {
+            color: var(--dark-text);
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-link:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .footer-right a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+            background-color: var(--light-peach);
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-right a:hover {
+            background-color: var(--accent);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .splash-logo { font-size: 3rem; }
+            .splash-sub { font-size: 0.9rem; }
+            .site-footer {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+                padding: 1.2rem 5%;
+            }
+            .footer-center { order: -1; }
+        }
+
+        /* --- MIDNIGHT READING MODE --- */
+        body.dark-mode {
+            --white: #121212;
+            --nav-bg: #1A1A1A;
+            --soft-peach: #2A2A2A;
+            --dark-text: #EAEAEA;
+            --light-peach: #333333;
+        }
+
+        body.dark-mode #splash-screen { background-color: var(--white); } 
+        body.dark-mode .splash-sub { color: #AAA; }
+        body.dark-mode .footer-left { color: #999; }
+        body.dark-mode .footer-right a { background-color: #333; color: var(--dark-text); }
+        body.dark-mode .footer-right a:hover { background-color: var(--accent); color: #121212; }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <h1 class="splash-logo">QUILLS</h1>
+        <p class="splash-sub">Literary Society</p>
+    </div>
+
+    <nav>
+        <a href="about.html" target="contentFrame" class="logo">QUILLS</a>
+        
+        <div class="nav-right">
+            <div class="theme-toggle" onclick="toggleTheme()" id="theme-icon">🌙</div>
+            <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+            <div class="nav-links" id="nav-menu">
+                <a href="team.html" target="contentFrame">Team</a>
+                <a href="events.html" target="contentFrame">Events</a>
+                <a href="journal.html" target="contentFrame">Journal</a>
+                <a href="about.html" target="contentFrame">About</a>
+                <a href="vision.html" target="contentFrame">Vision</a>
+                <a href="attendance.html" target="contentFrame">Attendance</a>
+                <a href="muse.html" target="contentFrame">AI Muse</a>
+                <a href="lounge.html" target="contentFrame">Lounge</a>
+                <a href="comingsoon.html" target="contentFrame" class="nav-btn">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content-container">
+        <iframe name="contentFrame" src="about.html" title="Quills Content"></iframe>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-left">
+            &copy; 2026 Quills Literary Society. All rights reserved.
+        </div>
+        
+        <div class="footer-center">
+            <a href="mailto:qsociety690@gmail.com" class="social-link" title="Email Us">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </a>
+            <a href="https://www.instagram.com/quills_literary_society?igsh=aWlpeGc2aGl1ZHpz" target="_blank" class="social-link" title="Follow us on Instagram">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+            </a>
+        </div>
+
+        <div class="footer-right">
+            <a href="admin.html" target="contentFrame">Admin Login ⚙️</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- SPLASH SCREEN LOGIC ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if (splash) {
+                    splash.style.opacity = '0';
+                    splash.style.visibility = 'hidden';
+                }
+            }, 1800);
+        });
+
+        // --- MENU & THEME LOGIC ---
+        function toggleMenu() {
+            const nav = document.getElementById('nav-menu');
+            nav.classList.toggle('show');
+        }
+
+        const navLinks = document.querySelectorAll('#nav-menu a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('nav-menu').classList.remove('show');
+            });
+        });
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.innerText = "☀️";
+                localStorage.setItem('quills_theme', 'dark');
+                const iframe = document.querySelector('iframe').contentWindow;
+                if(iframe && iframe.document.body) {
+                    iframe.document.body.classList.add('dark-mode');
+                }
+            } else {
+                themeIcon.innerText = "🌙";
+                localStorage.setItem('quills_theme', 'light');
+                const iframe = document.querySelector('iframe').contentWindow;
+                if(iframe && iframe.document.body) {
+                    iframe.document.body.classList.remove('dark-mode');
+                }
+            }
+        }
+
+        // Apply saved theme immediately
+        const savedTheme = localStorage.getItem('quills_theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('theme-icon').innerText = "☀️";
+        }
+        
+        const iframe = document.querySelector('iframe');
+        iframe.onload = () => {
+            if (document.body.classList.contains('dark-mode')) {
+                iframe.contentWindow.document.body.classList.add('dark-mode');
+            }
+        };
+    </script>
+</body>
+</html>

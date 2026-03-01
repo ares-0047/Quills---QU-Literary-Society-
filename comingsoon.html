@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration | Quills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-peach: #FAD6C3;
+            --white: #FFFFFF;
+            --dark-text: #333333;
+            --accent: #E29578;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--dark-text);
+            background-color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+            margin: 0;
+            padding: 4rem 5%;
+            min-height: 100vh;
+        }
+
+        .registration-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--soft-peach);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        iframe {
+            width: 100%;
+            height: 800px; 
+            border: none;
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 2rem 1rem; }
+            .registration-container { padding: 2rem 1.5rem; }
+            h2 { font-size: 2rem; }
+            iframe { height: 1100px; } 
+        }
+
+        body.dark-mode {
+            --white: #121212;         
+            --soft-peach: #2A2A2A;    
+            --dark-text: #EAEAEA;     
+            --accent: #E29578;        
+        }
+
+        body.dark-mode .form-wrapper {
+            background: #1E1E1E; 
+        }
+        
+        body.dark-mode p {
+            color: #AAA;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="registration-container">
+        <div class="icon">✨</div>
+        <h2>Register Now</h2>
+        <p>Fill out the form below to register and pay the 50 rupees entry fee. Be the first to join the narrative!</p>
+        
+        <div class="form-wrapper">
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe3xgcXObd4rnYmuI7EQKGhdN4eLXDAiZ1N9YzoTvMUB31v9w/viewform?embedded=true" width="640" height="1688" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        </div>
+    </div>
+
+</body>
+</html>

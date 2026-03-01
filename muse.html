@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AI Muse | Quills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-peach: #FAD6C3;
+            --light-peach: #FFE5D9;
+            --white: #FFFFFF;
+            --dark-text: #333333;
+            --accent: #E29578;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--dark-text);
+            background-color: var(--white);
+            margin: 0;
+            padding: 3rem 5%;
+            animation: fadeIn 0.8s ease-in-out;
+            min-height: 100vh;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+        }
+
+        .muse-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--soft-peach);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--white);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--accent);
+        }
+
+        .generate-btn {
+            width: 100%;
+            background-color: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-body);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .generate-btn:hover {
+            background-color: #d17b5c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(226, 149, 120, 0.4);
+        }
+
+        .output-box {
+            margin-top: 2rem;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            min-height: 100px;
+            border-left: 4px solid var(--accent);
+            display: none; 
+        }
+
+        .output-text {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: var(--dark-text);
+            font-style: italic;
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--white);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            body { padding: 2rem 1rem; }
+            .section-title { font-size: 2rem; }
+            .muse-container { padding: 1.5rem; }
+            .output-box { padding: 1.5rem; }
+            .output-text { font-size: 1.1rem; }
+        }
+
+        body.dark-mode { --white: #121212; --soft-peach: #1E1E1E; --dark-text: #EAEAEA; }
+        body.dark-mode .output-box { background: #2A2A2A; border-color: var(--accent); }
+        body.dark-mode input, body.dark-mode select { background: #2A2A2A; color: var(--dark-text); border-color: #444; }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <h2 class="section-title">The Quills Muse</h2>
+        <p class="section-subtitle" style="color:#666;">Overcome writer's block with a touch of AI inspiration.</p>
+    </div>
+
+    <div class="muse-container">
+        <div class="input-group">
+            <label>What do you need?</label>
+            <select id="request-type">
+                <option value="a creative writing prompt">A Writing Prompt</option>
+                <option value="a poetic opening sentence">An Opening Sentence</option>
+                <option value="a short haiku">A Haiku</option>
+                <option value="a 4-line poem">A Short Poem</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>What is the mood, topic, or theme?</label>
+            <input type="text" id="topic-input" placeholder="e.g., A rainy night in a futuristic city, melancholy, hope...">
+        </div>
+
+        <button class="generate-btn" id="generate-btn" onclick="generateInspiration()">
+            <span id="btn-text">Summon the Muse</span>
+            <div class="loader" id="loader"></div>
+        </button>
+
+        <div class="output-box" id="output-box">
+            <div class="output-text" id="output-text"></div>
+        </div>
+    </div>
+
+   <script>
+        // !!! PASTE YOUR GEMINI API KEY HERE !!!
+        const API_KEY = "AIzaSyB5VKBeeL_6s-k8NB70uwPqPmneCrNZgxs"; 
+
+        async function generateInspiration() {
+            const requestType = document.getElementById('request-type').value;
+            const topic = document.getElementById('topic-input').value.trim();
+            const btn = document.getElementById('generate-btn');
+            const btnText = document.getElementById('btn-text');
+            const loader = document.getElementById('loader');
+            const outputBox = document.getElementById('output-box');
+            const outputText = document.getElementById('output-text');
+
+            if (!topic) {
+                alert("Please provide a topic or mood first!");
+                return;
+            }
+
+            btn.disabled = true;
+            btnText.innerText = "Consulting the Muse...";
+            loader.style.display = "block";
+            outputBox.style.display = "none";
+            outputText.innerHTML = "";
+
+            const prompt = `You are a creative writing assistant for a university literary society. The user wants ${requestType} about: "${topic}". Keep the response highly literary, evocative, and under 60 words. Do not include any conversational filler or introductions, just output the creative text itself.`;
+
+            const cleanKey = API_KEY.trim(); 
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${cleanKey}`;
+            
+            const payload = {
+                contents: [{
+                    parts: [{ text: prompt }]
+                }]
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorDetails = await response.json();
+                    console.error("Google API Error Details:", errorDetails);
+                    throw new Error(`Google responded with status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    const aiResponse = data.candidates[0].content.parts[0].text.trim();
+                    
+                    outputBox.style.display = "block";
+                    typeWriterEffect(aiResponse, outputText);
+                } else {
+                    throw new Error("Invalid response format from AI.");
+                }
+
+            } catch (error) {
+                console.error("API Error:", error);
+                alert("The Muse is currently resting. Check the Developer Console for the exact error.");
+            } finally {
+                btn.disabled = false;
+                btnText.innerText = "Summon the Muse";
+                loader.style.display = "none";
+            }
+        }
+
+        function typeWriterEffect(text, element) {
+            let i = 0;
+            element.innerHTML = "";
+            function type() {
+                if (i < text.length) {
+                    if (text.charAt(i) === '\n') {
+                        element.innerHTML += '<br>';
+                    } else {
+                        element.innerHTML += text.charAt(i);
+                    }
+                    i++;
+                    setTimeout(type, 25); 
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>

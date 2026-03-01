@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Literature</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-peach: #FAD6C3;
+            --light-peach: #FFE5D9;
+            --white: #FFFFFF;
+            --dark-text: #333333;
+            --accent: #E29578;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--dark-text);
+            background-color: var(--white);
+            margin: 0;
+            padding: 0;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .parallax-quote {
+            background-image: linear-gradient(rgba(250, 214, 195, 0.8), rgba(255, 229, 217, 0.9)), url('https://images.unsplash.com/photo-1455390582262-044cdead27d8?auto=format&fit=crop&w=1200&q=80');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            padding: 6rem 5%;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .quote-text {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            font-style: italic;
+            color: var(--dark-text);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+
+        .quote-author {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .content-container {
+            padding: 0 5% 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            background-color: var(--white);
+            border-left: 4px solid var(--accent);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border-radius: 0 12px 12px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(226, 149, 120, 0.1);
+        }
+
+        .info-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    
+        @media (max-width: 768px) {
+            body { padding: 1.5rem 5%; }
+            .section-title { font-size: 2rem; margin-bottom: 2rem; }
+            .parallax-quote { padding: 4rem 5%; }
+            .quote-text { font-size: 1.4rem; }
+            .info-card { padding: 1.5rem; border-radius: 0 8px 8px 0; }
+            .info-card h3 { font-size: 1.5rem; }
+            .stats-container { flex-direction: column; gap: 2rem; } 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="parallax-quote">
+        <p class="quote-text">"That is part of the beauty of all literature. You discover that your longings are universal longings, that you're not lonely and isolated from anyone."</p>
+        <p class="quote-author">— F. Scott Fitzgerald</p>
+    </div>
+
+    <div class="content-container">
+        <div class="info-card">
+            <h3>What is Literature?</h3>
+            <p>Literature is the mirror of humanity. It is the art of written work that spans poetry, prose, drama, and non-fiction. Beyond just words on a page, it is the preservation of culture, history, and the deepest emotions of the human experience. It allows us to step into lives we have never lived and eras we have never seen.</p>
+        </div>
+
+        <div class="info-card">
+            <h3>Importance of Literature in Youth</h3>
+            <p>For young minds, literature is a catalyst for empathy and critical thinking. It challenges preconceived notions and encourages readers to question the world around them. Engaging with literature at a young age builds articulate communicators, creative problem-solvers, and individuals who possess a profound understanding of diverse perspectives.</p>
+        </div>
+
+        <div class="info-card">
+            <h3>Role of Literary Societies in Universities</h3>
+            <p>A university literary society like Quills is a sanctuary for expression. We provide a platform beyond academic rigor where students can freely explore their artistic inclinations. By fostering debate, encouraging public speaking, and hosting creative spaces, we build a community that celebrates intellectual curiosity and the power of narrative.</p>
+        </div>
+    </div>
+
+</body>
+</html>
